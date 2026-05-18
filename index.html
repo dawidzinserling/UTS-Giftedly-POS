@@ -1,0 +1,2841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Ultron Trading Solutions & Giftedly - POS System with Payroll</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 400px;
+        }
+
+        .login-box h2 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 30px;
+        }
+
+        .business-selector {
+            margin-bottom: 20px;
+        }
+
+        .business-selector label {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .business-selector label:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .status-box {
+            margin-top: 20px;
+            padding: 10px;
+            background: rgba(240, 240, 240, 0.9);
+            border-radius: 8px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .pos-system {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .logo h1 {
+            color: #667eea;
+            font-size: 24px;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-info button {
+            margin-top: 5px;
+            padding: 5px 10px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .tab-bar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            overflow-x: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            background: rgba(240, 240, 240, 0.7);
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            background: rgba(224, 224, 224, 0.9);
+        }
+
+        .tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .search-section {
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid rgba(221, 221, 221, 0.8);
+            border-radius: 10px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .search-box button {
+            padding: 15px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-section input, .filter-section select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .results-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .result-item {
+            padding: 15px;
+            border: 1px solid rgba(221, 221, 221, 0.8);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .result-item:hover {
+            background: rgba(248, 249, 255, 0.9);
+            border-color: #667eea;
+        }
+
+        .customer-details, .employee-details {
+            background: rgba(248, 249, 255, 0.8);
+            backdrop-filter: blur(5px);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .employee-list-item {
+            padding: 15px;
+            border: 1px solid rgba(221, 221, 221, 0.8);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.7);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .employee-list-item:hover {
+            background: rgba(248, 249, 255, 0.9);
+            border-color: #667eea;
+        }
+
+        .employee-total-payments {
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .payroll-wage-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid rgba(221, 221, 221, 0.5);
+        }
+
+        .payroll-wage-row input {
+            width: 150px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: right;
+        }
+
+        .payroll-summary {
+            background: rgba(248, 249, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .payroll-summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            font-size: 18px;
+        }
+
+        .payroll-summary-row.total {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            border-top: 2px solid #ddd;
+            margin-top: 10px;
+            padding-top: 15px;
+        }
+
+        .payroll-summary-row.balance {
+            font-size: 24px;
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .wage-history-item {
+            background: rgba(248, 249, 255, 0.8);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* POS Styles */
+        .cart-items {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            background: rgba(249, 249, 249, 0.8);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-item-info {
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .cart-item-sku {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .cart-item-title {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .cart-item-price {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .cart-item-price strike {
+            color: #999;
+        }
+
+        .cart-item-price .new-price {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-item-controls button {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cart-total {
+            text-align: right;
+            padding-top: 20px;
+            border-top: 2px solid rgba(221, 221, 221, 0.8);
+        }
+
+        .total-line {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .grand-total {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .button-group button {
+            flex: 1;
+        }
+
+        .btn-clear {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-clear:hover {
+            background: #c82333;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 15px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: #218838;
+        }
+
+        .btn-secondary {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #138496;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-print {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-pdf {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-download {
+            background: #28a745;
+            color: white;
+        }
+
+        .receipt-content {
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1001;
+        }
+
+        .notification.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .edit-form {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .edit-form input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .edit-form button {
+            margin-top: 10px;
+            padding: 8px 15px;
+        }
+        
+        .admin-only {
+            display: none;
+        }
+        
+        .product-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid rgba(238, 238, 238, 0.8);
+        }
+        
+        .product-info {
+            flex: 1;
+        }
+        
+        .product-sku {
+            font-weight: normal;
+            color: #666;
+        }
+        
+        .product-price {
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .product-actions button {
+            margin-left: 10px;
+            padding: 5px 10px;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .edit-btn {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(248, 249, 255, 0.5);
+            border-radius: 10px;
+        }
+
+        .filter-group input, .filter-group select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .filter-group button {
+            padding: 8px 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+
+        .payroll-balance-row {
+            background: rgba(248, 249, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .balance-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(221, 221, 221, 0.5);
+        }
+
+        .balance-line:last-child {
+            border-bottom: none;
+        }
+
+        .balance-label {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .balance-value {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .balance-value input {
+            width: 180px;
+            padding: 8px;
+            font-size: 16px;
+            text-align: right;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .separator-line {
+            margin: 20px 0;
+            border-top: 2px dashed #ddd;
+            text-align: center;
+            position: relative;
+        }
+
+        .separator-line span {
+            background: #f8f9ff;
+            padding: 0 10px;
+            position: relative;
+            top: -12px;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <h2>POS System Login</h2>
+            <div class="business-selector">
+                <label>
+                    <input type="radio" name="business" value="ultron" checked> 
+                    <span>🏢 Ultron Trading Solutions</span>
+                </label>
+                <label>
+                    <input type="radio" name="business" value="giftedly"> 
+                    <span>🎁 Giftedly</span>
+                </label>
+            </div>
+            <input type="text" id="loginUsername" placeholder="Username">
+            <input type="password" id="loginPassword" placeholder="Password">
+            <button id="loginBtn">Login</button>
+            <div class="status-box" id="statusBox">
+                Login: DawidAdmin / Sh@rlene1984
+            </div>
+        </div>
+    </div>
+
+    <!-- Main POS System -->
+    <div id="posSystem" class="pos-system">
+        <div class="container">
+            <div class="header">
+                <div class="logo">
+                    <img id="businessIcon" class="logo-img" src="" alt="Logo">
+                    <div>
+                        <h1 id="businessName">Ultron Trading Solutions</h1>
+                        <p>Point of Sale System with Payroll</p>
+                    </div>
+                </div>
+                <div class="user-info">
+                    <div id="userRoleDisplay"></div>
+                    <button id="logoutBtn">Logout</button>
+                </div>
+            </div>
+
+            <div class="tab-bar" id="tabBar">
+                <button class="tab active" data-tab="new-sale">🛒 New Sale</button>
+                <button class="tab" data-tab="transactions">📋 Transactions</button>
+                <button class="tab" data-tab="customer-profile">👥 Customer Profile</button>
+                <button class="tab" data-tab="new-customer">➕ New Customer</button>
+                <button class="tab" data-tab="search-product">📦 Products</button>
+                <button class="tab admin-only" data-tab="payroll">💰 Payroll</button>
+                <button class="tab admin-only" data-tab="admin-panel">🔧 Admin Panel</button>
+            </div>
+
+            <!-- New Sale Tab -->
+            <div id="new-sale" class="tab-content active">
+                <div id="saleCustomerSection">
+                    <h2>👤 Select Customer</h2>
+                    <div class="search-section">
+                        <div class="search-box">
+                            <input type="text" id="saleCustomerSearch" placeholder="Type at least 2 characters to search..." autocomplete="off">
+                        </div>
+                        <div id="saleCustomerResults" class="results-list"></div>
+                    </div>
+                </div>
+
+                <div id="saleProductsSection" style="display:none;">
+                    <div id="currentCustomerInfo" class="customer-details"></div>
+                    
+                    <div class="discount-section" style="background: rgba(255, 243, 205, 0.8); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                        <h3>🏷️ Percentage Discount</h3>
+                        <div class="discount-input" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                            <label>Discount (%):</label>
+                            <input type="number" id="discountPercent" value="0" step="1" min="0" max="100" style="width: 100px; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                            <button id="applyDiscountBtn" class="edit-btn">Apply Discount</button>
+                        </div>
+                        <div id="discountStatus" style="margin-top: 10px; font-size: 12px;"></div>
+                    </div>
+                    
+                    <h2>🛍️ Add Products</h2>
+                    <div class="search-section">
+                        <div class="search-box">
+                            <input type="text" id="saleProductSearch" placeholder="Type at least 2 characters to search..." autocomplete="off">
+                        </div>
+                        <div id="saleProductResults" class="results-list"></div>
+                    </div>
+                    <h2>🛒 Current Order</h2>
+                    <div id="cartItems" class="cart-items"></div>
+                    <div class="cart-total">
+                        <div class="total-line">Subtotal (excl. VAT): R<span id="subtotalExcl">0.00</span></div>
+                        <div class="total-line">VAT (15%): R<span id="vatAmount">0.00</span></div>
+                        <div class="total-line">Discount: -R<span id="discountAmount">0.00</span></div>
+                        <div class="total-line grand-total">Total: R<span id="grandTotal">0.00</span></div>
+                    </div>
+                    <div class="button-group">
+                        <button id="clearSaleBtn" class="btn-clear">🗑️ Clear Sale</button>
+                        <button id="proceedToTenderBtn" class="btn-primary" style="background: #667eea;">💳 Proceed to Tender</button>
+                    </div>
+                </div>
+
+                <div id="salePaymentSection" style="display:none;">
+                    <h2>💳 Tender</h2>
+                    <div class="tender-info" style="background: rgba(248, 249, 255, 0.9); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <div class="tender-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(221, 221, 221, 0.5);">
+                            <span class="tender-label" style="font-weight: bold; font-size: 16px;">Customer:</span>
+                            <span class="tender-value" id="tenderCustomerName" style="font-size: 18px; font-weight: bold;"></span>
+                        </div>
+                        <div class="tender-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(221, 221, 221, 0.5);">
+                            <span class="tender-label" style="font-weight: bold; font-size: 16px;">Payment Method:</span>
+                            <span class="tender-value">
+                                <select id="tenderPaymentMethodSelect" style="padding: 5px 10px; font-size: 16px; font-weight: bold; border-radius: 5px; border: 1px solid #ddd;">
+                                    <option value="Cash">💵 Cash</option>
+                                    <option value="Card">💳 Card</option>
+                                    <option value="EFT">🏦 EFT</option>
+                                </select>
+                            </span>
+                        </div>
+                        <div class="tender-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(221, 221, 221, 0.5);">
+                            <span class="tender-label" style="font-weight: bold; font-size: 16px;">Total Due:</span>
+                            <span class="tender-value tender-total" id="tenderTotal" style="font-size: 24px; font-weight: bold; color: #667eea;">R0.00</span>
+                        </div>
+                        <div class="tender-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(221, 221, 221, 0.5);">
+                            <span class="tender-label" style="font-weight: bold; font-size: 16px;">Tender Amount:</span>
+                            <span class="tender-value" id="tenderAmount" style="font-size: 18px; font-weight: bold;">R0.00</span>
+                        </div>
+                        <div class="tender-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0;">
+                            <span class="tender-label" style="font-weight: bold; font-size: 16px;">Change Due:</span>
+                            <span class="tender-value tender-change" id="tenderChange" style="font-size: 24px; font-weight: bold; color: #28a745;">R0.00</span>
+                        </div>
+                    </div>
+                    
+                    <div id="bankField" class="bank-input" style="margin-bottom: 20px; display: none;">
+                        <label>Select Bank:</label>
+                        <select id="bankName" style="width:100%; padding:12px; border:2px solid rgba(221, 221, 221, 0.8); border-radius:8px; background: rgba(255,255,255,0.9);">
+                            <option value="">Select Bank</option>
+                            <option value="Capitec">Capitec Bank</option>
+                            <option value="FNB">FNB (First National Bank)</option>
+                            <option value="Standard Bank">Standard Bank</option>
+                        </select>
+                    </div>
+                    
+                    <div class="payment-section" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                        <div class="payment-left" style="flex: 2;">
+                            <div class="payment-amount-input" style="margin-bottom: 20px;">
+                                <label>Enter Tender Amount:</label>
+                                <input type="number" id="paymentAmount" placeholder="0.00" step="0.01" style="width:100%; padding:15px; border:2px solid rgba(221, 221, 221, 0.8); border-radius:8px; font-size:24px; background: rgba(255,255,255,0.9); text-align:right; font-weight:bold;">
+                            </div>
+                        </div>
+                        <div class="payment-right" style="flex: 1;">
+                            <div class="numpad" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px;">
+                                <button type="button" class="num-btn" style="padding:20px; font-size:20px; font-weight:bold; border:1px solid #ddd; border-radius:10px; background:white; cursor:pointer;">7</button>
+                                <button type="button" class="num-btn" style="padding:20px; font-size:20px; font-weight:bold; border:1px solid #ddd; border-radius:10px; background:white; cursor:pointer;">8</button>
+                                <button type="button" class="num-btn" style="padding:20px; font-size:20px; font-weight:bold; border:1px solid #ddd; border-radius:10px; background:white; cursor:pointer;">9</button>
+                                <button type="button" class="num-btn" style="padding:20px; font-size:20px; font-weight:bold; border:1px solid #ddd; border-radius:10px; background:white; cursor:pointer;">4</button>
+                                <button type="button" class="num-btn" style="padding:20px; font-size:20px; font-weight:bold; border:1px solid #ddd; border-radius:10px; background:white; cursor:pointer;">5</button>
+                                <button type="button" class="num-btn" style="padding:20px; font-size:20px; font-weight:bold; border:1px solid #ddd; border-radius:10px; background:white; cursor:pointer;">6</button>
+                                <button type="button" class="num-btn" style="padding:20px; font-size:20px; font-weight:bold; border:1px solid #ddd; border-radius:10px; background:white; cursor:pointer;">1</button>
+                                <button type="button" class="num-btn" style="padding:20px; font-size:20px; font-weight:bold; border:1px solid #ddd; border-radius:10px; background:white; cursor:pointer;">2</button>
+                                <button type="button" class="num-btn" style="padding:20px; font-size:20px; font-weight:bold; border:1px solid #ddd; border-radius:10px; background:white; cursor:pointer;">3</button>
+                                <button type="button" class="num-btn" style="padding:20px; font-size:20px; font-weight:bold; border:1px solid #ddd; border-radius:10px; background:white; cursor:pointer;">0</button>
+                                <button type="button" class="num-btn" style="padding:20px; font-size:20px; font-weight:bold; border:1px solid #ddd; border-radius:10px; background:white; cursor:pointer;">.</button>
+                                <button type="button" id="clearNumBtn" class="btn-clear" style="background:#dc3545; color:white; border:none; border-radius:10px; cursor:pointer;">C</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="completeTenderBtn" class="btn-primary" style="margin-top: 20px;">✓ Complete Tender</button>
+                    <button id="backToCartBtn" class="btn-clear" style="margin-top: 10px;">← Back to Cart</button>
+                </div>
+            </div>
+
+            <!-- Transactions Tab with Filters -->
+            <div id="transactions" class="tab-content">
+                <h2>📋 Transaction History</h2>
+                <div class="filter-group">
+                    <input type="date" id="filterDateFrom" placeholder="From Date">
+                    <input type="date" id="filterDateTo" placeholder="To Date">
+                    <select id="filterPaymentMethod">
+                        <option value="">All Payment Methods</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Card">Card</option>
+                        <option value="EFT">EFT</option>
+                    </select>
+                    <select id="filterBank">
+                        <option value="">All Banks (EFT only)</option>
+                        <option value="Capitec">Capitec</option>
+                        <option value="FNB">FNB</option>
+                        <option value="Standard Bank">Standard Bank</option>
+                    </select>
+                    <button id="applyFilterBtn">Apply Filter</button>
+                    <button id="clearFilterBtn" class="btn-clear" style="width: auto; padding: 8px 15px;">Clear</button>
+                </div>
+                <div class="search-box">
+                    <input type="text" id="transactionSearch" placeholder="Search by receipt number, customer name, or phone...">
+                </div>
+                <div id="transactionResults" class="results-list"></div>
+            </div>
+
+            <!-- Customer Profile Tab -->
+            <div id="customer-profile" class="tab-content">
+                <h2>👥 Customer Profile</h2>
+                <div class="search-section">
+                    <div class="search-box">
+                        <input type="text" id="customerSearchInput" placeholder="Type at least 2 characters to search..." autocomplete="off">
+                    </div>
+                    <div id="customerSearchResults" class="results-list"></div>
+                </div>
+                <div id="customerViewDetails" style="display:none;">
+                    <div class="customer-details">
+                        <h3>Customer Details</h3>
+                        <div id="viewCustomerInfo"></div>
+                        <div id="editCustomerForm" class="edit-form">
+                            <h4>Edit Customer</h4>
+                            <input type="text" id="editName" placeholder="Name">
+                            <input type="text" id="editPhone" placeholder="Phone">
+                            <input type="email" id="editEmail" placeholder="Email">
+                            <input type="date" id="editSinceDate" placeholder="Customer Since">
+                            <button id="saveEditBtn" class="btn-primary">Save Changes</button>
+                            <button id="cancelEditBtn" class="btn-clear">Cancel</button>
+                        </div>
+                        <div class="button-group" style="margin-top: 10px;">
+                            <button id="showEditFormBtn" class="edit-btn">✏️ Edit Customer</button>
+                        </div>
+                        <div class="metadata-list">
+                            <h4>Additional Information</h4>
+                            <div id="customerMetadataList"></div>
+                            <div class="add-metadata" style="display: flex; gap: 10px; margin-top: 15px;">
+                                <select id="metadataType" style="padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                                    <option value="Contact">📞 Contact Number</option>
+                                    <option value="Address">🏠 Address</option>
+                                    <option value="ID Number">🆔 ID Number</option>
+                                    <option value="Account Number">💳 Account Number</option>
+                                    <option value="Note">📝 Note</option>
+                                </select>
+                                <input type="text" id="metadataValue" placeholder="Enter value..." style="padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                                <button id="addMetadataBtn" class="btn-primary" style="width: auto;">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <h3>Purchase History</h3>
+                    <div id="customerHistoryList" class="results-list"></div>
+                </div>
+            </div>
+
+            <!-- New Customer Tab -->
+            <div id="new-customer" class="tab-content">
+                <h2>➕ Create New Customer</h2>
+                <div class="search-section">
+                    <input type="text" id="newCustomerName" placeholder="Full Name *" style="width:100%; padding:12px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px; background: rgba(255,255,255,0.9);">
+                    <input type="text" id="newCustomerPhone" placeholder="Phone Number *" style="width:100%; padding:12px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px; background: rgba(255,255,255,0.9);">
+                    <input type="email" id="newCustomerEmail" placeholder="Email Address" style="width:100%; padding:12px; margin-bottom:10px; border:2px solid #ddd; border-radius:8px; background: rgba(255,255,255,0.9);">
+                    <input type="date" id="newCustomerSince" placeholder="Customer Since" style="width:100%; padding:12px; margin-bottom:20px; border:2px solid #ddd; border-radius:8px; background: rgba(255,255,255,0.9);">
+                    <button id="createCustomerBtn" class="btn-primary">Create Customer</button>
+                </div>
+            </div>
+
+            <!-- Products Tab -->
+            <div id="search-product" class="tab-content">
+                <h2>📦 Product Catalog</h2>
+                <div class="search-section">
+                    <div class="search-box">
+                        <input type="text" id="productSearchInput" placeholder="Type at least 2 characters to search..." autocomplete="off">
+                    </div>
+                    <div id="productSearchResults" class="results-list"></div>
+                </div>
+            </div>
+
+            <!-- Payroll Tab -->
+            <div id="payroll" class="tab-content">
+                <h2>💰 Payroll System</h2>
+                
+                <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #ddd; padding-bottom: 10px;">
+                    <button id="payrollEmployeesTab" class="edit-btn" style="background: #667eea; color: white;">👥 Employees</button>
+                    <button id="payrollRunTab" class="edit-btn">🏃 Run Payroll</button>
+                </div>
+                
+                <!-- Employees Sub Tab -->
+                <div id="payrollEmployeesSection">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3>Employee Management</h3>
+                        <button id="addEmployeeBtn" class="btn-primary" style="width: auto; padding: 10px 20px;">➕ Add Employee</button>
+                    </div>
+                    <div id="employeeList" class="results-list"></div>
+                </div>
+                
+                <!-- Run Payroll Sub Tab -->
+                <div id="payrollRunSection" style="display: none;">
+                    <h3>Run Payroll</h3>
+                    
+                    <!-- USD Account Balance Section - Separate manual entries -->
+                    <div class="payroll-balance-row">
+                        <h4 style="margin-bottom: 10px; color: #17a2b8;">💰 USD Account Management (Manual Entry)</h4>
+                        <div class="balance-line">
+                            <span class="balance-label">Opening Account Balance ($):</span>
+                            <span class="balance-value">$ <input type="number" id="openingBalance" placeholder="0.00" step="0.01" value="10000.00"></span>
+                        </div>
+                        <div class="balance-line">
+                            <span class="balance-label">Withdrawal for Wages ($):</span>
+                            <span class="balance-value">$ <input type="number" id="withdrawalAmount" placeholder="0.00" step="0.01" value="0.00"></span>
+                        </div>
+                        <div class="balance-line">
+                            <span class="balance-label">Closing Account Balance ($):</span>
+                            <span class="balance-value">$ <input type="number" id="closingBalance" placeholder="0.00" step="0.01" value="10000.00"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="separator-line">
+                        <span>RAND (R) PAYROLL SECTION</span>
+                    </div>
+                    
+                    <div class="customer-details">
+                        <div class="form-group">
+                            <label>Profit Capital (R):</label>
+                            <input type="number" id="profitCapital" placeholder="Enter total amount available for wages in R" step="0.01" style="font-size: 20px; font-weight: bold;">
+                        </div>
+                    </div>
+                    
+                    <div id="payrollWageList" class="results-list" style="max-height: 400px; overflow-y: auto;"></div>
+                    
+                    <div class="payroll-summary">
+                        <div class="payroll-summary-row">
+                            <span>Total Wages (R):</span>
+                            <span id="totalWages">R0.00</span>
+                        </div>
+                        <div class="payroll-summary-row">
+                            <span>Profit Capital (R):</span>
+                            <span id="displayProfitCapital">R0.00</span>
+                        </div>
+                        <div class="payroll-summary-row total balance">
+                            <span>Remaining Balance (R):</span>
+                            <span id="remainingBalance">R0.00</span>
+                        </div>
+                    </div>
+                    
+                    <button id="runPayrollBtn" class="btn-primary">🏃 Run Payroll</button>
+                </div>
+            </div>
+
+            <!-- Admin Panel Tab -->
+            <div id="admin-panel" class="tab-content">
+                <h2>🔧 Admin Controls</h2>
+                
+                <div class="customer-details" style="margin-bottom: 20px;">
+                    <h3>👥 User Management</h3>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                        <input type="text" id="newUsername" placeholder="Username" style="flex:1; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        <input type="password" id="newPassword" placeholder="Password" style="flex:1; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        <select id="newUserRole" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                            <option value="cashier">Cashier</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                        <button id="createUserBtn" class="btn-primary" style="width: auto; padding: 10px 20px;">Create User</button>
+                    </div>
+                    <div id="userList" class="results-list" style="max-height: 200px;"></div>
+                </div>
+
+                <div class="customer-details">
+                    <h3>📦 Product Management</h3>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                        <input type="text" id="newProductSku" placeholder="SKU" style="flex:1; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        <input type="text" id="newProductDesc" placeholder="Description" style="flex:2; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        <input type="number" id="newProductPrice" placeholder="Price (incl. VAT)" step="0.01" style="flex:1; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        <button id="createProductBtn" class="btn-primary" style="width: auto; padding: 10px 20px;">Add Product</button>
+                    </div>
+                    <div id="productList" class="results-list" style="max-height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Employee Modal -->
+    <div id="employeeModal" class="modal">
+        <div class="modal-content">
+            <h3 id="employeeModalTitle">Add Employee</h3>
+            <div class="form-group">
+                <label>Employee Name:</label>
+                <input type="text" id="employeeName" placeholder="Full Name">
+            </div>
+            <div class="form-group">
+                <label>Bank Name:</label>
+                <input type="text" id="employeeBankName" placeholder="e.g., Capitec, FNB, Standard Bank">
+            </div>
+            <div class="form-group">
+                <label>Account Type:</label>
+                <select id="employeeAccountType">
+                    <option value="Cheque">Cheque Account</option>
+                    <option value="Savings">Savings Account</option>
+                    <option value="Transmission">Transmission Account</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Account Holder Name:</label>
+                <input type="text" id="employeeAccountHolder" placeholder="Name on account">
+            </div>
+            <div class="form-group">
+                <label>Account Number:</label>
+                <input type="text" id="employeeAccountNumber" placeholder="Account number">
+            </div>
+            <div class="form-group">
+                <label>Branch Code:</label>
+                <input type="text" id="employeeBranchCode" placeholder="Branch code">
+            </div>
+            <div class="modal-buttons">
+                <button id="saveEmployeeBtn" class="btn-primary">Save</button>
+                <button id="cancelEmployeeBtn" class="btn-clear">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Employee Profile Modal -->
+    <div id="employeeProfileModal" class="modal">
+        <div class="modal-content">
+            <h3>Employee Profile</h3>
+            <div id="employeeProfileInfo"></div>
+            <div class="button-group" style="margin-top: 15px;">
+                <button id="editEmployeeBtn" class="edit-btn">✏️ Edit</button>
+                <button id="deleteEmployeeBtn" class="delete-btn">🗑️ Delete</button>
+            </div>
+            <h4 style="margin-top: 20px;">Payment History</h4>
+            <div id="employeeWageHistory" class="results-list" style="max-height: 300px;"></div>
+            <div class="modal-buttons" style="margin-top: 20px;">
+                <button id="closeEmployeeProfileBtn" class="btn-clear">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manager Auth Modal -->
+    <div id="managerAuthModal" class="modal">
+        <div class="modal-content">
+            <h3>Manager Authorization Required</h3>
+            <p>This action requires manager approval. Please enter admin password:</p>
+            <input type="password" id="managerPassword" placeholder="Admin Password" style="width:100%; padding:10px; margin:15px 0; border:1px solid #ddd; border-radius:5px;">
+            <div class="modal-buttons">
+                <button id="approveActionBtn" class="btn-primary">Approve</button>
+                <button id="cancelActionBtn" class="btn-clear">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Price Override Modal -->
+    <div id="priceOverrideModal" class="modal">
+        <div class="modal-content">
+            <h3>Override Price</h3>
+            <p>Product: <span id="overrideProductName"></span></p>
+            <p>Original Price: R<span id="overrideOriginalPrice"></span></p>
+            <label>New Price:</label>
+            <input type="number" id="overrideNewPrice" step="0.01" style="width:100%; padding:10px; margin:15px 0; border:1px solid #ddd; border-radius:5px;">
+            <div class="modal-buttons">
+                <button id="confirmOverrideBtn" class="btn-primary">Confirm</button>
+                <button id="cancelOverrideBtn" class="btn-clear">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receipt Modal -->
+    <div id="receiptModal" class="modal">
+        <div class="modal-content">
+            <div id="receiptContent" class="receipt-content"></div>
+            <div class="modal-buttons">
+                <button id="printReceiptBtn" class="btn-print">🖨️ Print</button>
+                <button id="pdfReceiptBtn" class="btn-pdf">📄 Save as PDF</button>
+                <button id="downloadReceiptBtn" class="btn-download">💾 Download TXT</button>
+                <button id="closeReceiptBtn" style="background:#6c757d; color:white;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const SUPABASE_URL = 'https://nmxiyaffapotgvaolixn.supabase.co';
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5teGl5YWZmYXBvdGd2YW9saXhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5NTQ0ODcsImV4cCI6MjA5NDUzMDQ4N30.uENCn-Pl8xoqvLVNg_bEi2jlFmGgTU474lEZt70Sxns';
+            
+            let supabaseClient = null;
+            let currentBusiness = 'ultron';
+            let currentUser = null;
+            let currentSaleCustomer = null;
+            let allCustomers = [];
+            let allProducts = [];
+            let allTransactions = [];
+            let allEmployees = [];
+            let cart = [];
+            let discountPercent = 0;
+            let pendingDiscount = null;
+            let pendingPriceOverride = null;
+            let editingEmployeeId = null;
+            let currentWageEntries = [];
+            let currentReceiptText = '';
+            let employeeTotalPayments = {};
+            const VAT_RATE = 0.15;
+            
+            function generateReceiptNumber() {
+                return Math.floor(100000 + Math.random() * 900000).toString();
+            }
+            
+            function formatLocalDateTime(date) {
+                const d = new Date(date);
+                return d.toLocaleString('en-ZA', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                });
+            }
+            
+            function formatLocalDate(date) {
+                const d = new Date(date);
+                return d.toLocaleDateString('en-ZA');
+            }
+            
+            async function initSupabase() {
+                const statusBox = document.getElementById('statusBox');
+                statusBox.innerHTML = 'Connecting to Supabase...';
+                try {
+                    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    const { error } = await supabaseClient.from('users').select('count', { count: 'exact', head: true });
+                    if (error) throw error;
+                    statusBox.innerHTML = '✓ Connected! Ready to login.';
+                    return true;
+                } catch (error) {
+                    statusBox.innerHTML = '✗ Database error. Please run SQL setup first.';
+                    return false;
+                }
+            }
+            
+            // ========== EMPLOYEE FUNCTIONS ==========
+            async function loadAllEmployees() {
+                const { data, error } = await supabaseClient
+                    .from('employees')
+                    .select('*')
+                    .eq('business', currentBusiness)
+                    .order('name');
+                if (!error && data) {
+                    allEmployees = data;
+                    await loadEmployeeTotalPayments();
+                    displayEmployeeList();
+                    return data;
+                }
+                return [];
+            }
+            
+            async function loadEmployeeTotalPayments() {
+                for (const emp of allEmployees) {
+                    const { data, error } = await supabaseClient
+                        .from('payroll_transactions')
+                        .select('amount')
+                        .eq('employee_id', emp.id)
+                        .eq('business', currentBusiness);
+                    
+                    if (!error && data) {
+                        const total = data.reduce((sum, t) => sum + t.amount, 0);
+                        employeeTotalPayments[emp.id] = total;
+                    } else {
+                        employeeTotalPayments[emp.id] = 0;
+                    }
+                }
+            }
+            
+            function displayEmployeeList() {
+                const employeeListDiv = document.getElementById('employeeList');
+                if (allEmployees.length > 0) {
+                    employeeListDiv.innerHTML = allEmployees.map(emp => `
+                        <div class="employee-list-item" onclick="window.viewEmployeeProfile(${emp.id})">
+                            <span><strong>${emp.name}</strong><br>🏦 ${emp.bank_name}</span>
+                            <span class="employee-total-payments">Total Paid: R${(employeeTotalPayments[emp.id] || 0).toFixed(2)}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    employeeListDiv.innerHTML = '<div style="padding: 15px; color: #999; text-align: center;">No employees added yet. Click "Add Employee" to get started.</div>';
+                }
+            }
+            
+            window.viewEmployeeProfile = async function(employeeId) {
+                const employee = allEmployees.find(e => e.id === employeeId);
+                if (!employee) return;
+                
+                const { data: wageHistory } = await supabaseClient
+                    .from('payroll_transactions')
+                    .select('*')
+                    .eq('employee_id', employeeId)
+                    .eq('business', currentBusiness)
+                    .order('date', { ascending: false });
+                
+                document.getElementById('employeeProfileInfo').innerHTML = `
+                    <div class="customer-details">
+                        <p><strong>${employee.name}</strong></p>
+                        <p>🏦 Bank: ${employee.bank_name}</p>
+                        <p>📋 Account Type: ${employee.account_type}</p>
+                        <p>👤 Account Holder: ${employee.account_holder}</p>
+                        <p>💳 Account Number: ${employee.account_number}</p>
+                        <p>🏢 Branch Code: ${employee.branch_code}</p>
+                        <p style="margin-top: 10px; color: #28a745;"><strong>Total Payments Received: R${(employeeTotalPayments[employeeId] || 0).toFixed(2)}</strong></p>
+                    </div>
+                `;
+                
+                const historyDiv = document.getElementById('employeeWageHistory');
+                if (wageHistory && wageHistory.length > 0) {
+                    historyDiv.innerHTML = wageHistory.map(w => `
+                        <div class="wage-history-item" onclick="window.viewWageReceipt(${w.id})">
+                            <strong>Receipt: ${w.receipt_number}</strong><br>
+                            Date: ${formatLocalDateTime(w.date)}<br>
+                            Amount: R${w.amount.toFixed(2)}<br>
+                            Processed by: ${w.processed_by}
+                        </div>
+                    `).join('');
+                } else {
+                    historyDiv.innerHTML = '<p style="color:#999;">No payment history recorded yet.</p>';
+                }
+                
+                window.currentEmployeeId = employeeId;
+                document.getElementById('employeeProfileModal').style.display = 'flex';
+            };
+            
+            window.editEmployee = function() {
+                const employee = allEmployees.find(e => e.id === window.currentEmployeeId);
+                if (!employee) return;
+                
+                editingEmployeeId = employee.id;
+                document.getElementById('employeeModalTitle').innerHTML = 'Edit Employee';
+                document.getElementById('employeeName').value = employee.name;
+                document.getElementById('employeeBankName').value = employee.bank_name;
+                document.getElementById('employeeAccountType').value = employee.account_type;
+                document.getElementById('employeeAccountHolder').value = employee.account_holder;
+                document.getElementById('employeeAccountNumber').value = employee.account_number;
+                document.getElementById('employeeBranchCode').value = employee.branch_code;
+                document.getElementById('employeeModal').style.display = 'flex';
+                document.getElementById('employeeProfileModal').style.display = 'none';
+            };
+            
+            window.deleteEmployee = async function() {
+                if (confirm('Are you sure you want to delete this employee? This will also delete all payment history for this employee.')) {
+                    const { error } = await supabaseClient
+                        .from('employees')
+                        .delete()
+                        .eq('id', window.currentEmployeeId);
+                    
+                    if (error) {
+                        showNotification('Error deleting employee', 'error');
+                    } else {
+                        showNotification('Employee deleted!', 'success');
+                        await loadAllEmployees();
+                        document.getElementById('employeeProfileModal').style.display = 'none';
+                    }
+                }
+            };
+            
+            window.viewWageReceipt = async function(transactionId) {
+                const { data } = await supabaseClient
+                    .from('payroll_transactions')
+                    .select('*')
+                    .eq('id', transactionId)
+                    .single();
+                
+                if (data) {
+                    const receipt = generatePaymentReceipt(data);
+                    showReceiptModal(receipt);
+                }
+            };
+            
+            function generatePaymentReceipt(transaction) {
+                const businessName = currentBusiness === 'ultron' ? 'ULTRON TRADING SOLUTIONS' : 'GIFTEDLY';
+                return `${businessName}
+=========================
+PAYMENT RECEIPT
+=========================
+Receipt #: ${transaction.receipt_number}
+Date: ${formatLocalDateTime(transaction.date)}
+Processed by: ${transaction.processed_by}
+=========================
+EMPLOYEE DETAILS
+=========================
+Name: ${transaction.employee_name}
+Bank: ${transaction.bank_name}
+Account Type: ${transaction.account_type}
+Account Holder: ${transaction.account_holder}
+Account Number: ${transaction.account_number}
+Branch Code: ${transaction.branch_code}
+=========================
+PAYMENT DETAILS
+=========================
+Amount Paid: R${transaction.amount.toFixed(2)}
+=========================
+Thank you for your service!
+`;
+            }
+            
+            async function saveEmployee() {
+                const name = document.getElementById('employeeName').value;
+                const bank_name = document.getElementById('employeeBankName').value;
+                const account_type = document.getElementById('employeeAccountType').value;
+                const account_holder = document.getElementById('employeeAccountHolder').value;
+                const account_number = document.getElementById('employeeAccountNumber').value;
+                const branch_code = document.getElementById('employeeBranchCode').value;
+                
+                if (!name || !bank_name || !account_holder || !account_number || !branch_code) {
+                    showNotification('Please fill all required fields', 'warning');
+                    return;
+                }
+                
+                if (editingEmployeeId) {
+                    const { error } = await supabaseClient
+                        .from('employees')
+                        .update({ name, bank_name, account_type, account_holder, account_number, branch_code })
+                        .eq('id', editingEmployeeId);
+                    
+                    if (error) {
+                        showNotification('Error updating employee', 'error');
+                    } else {
+                        showNotification('Employee updated!', 'success');
+                        await loadAllEmployees();
+                        closeEmployeeModal();
+                    }
+                } else {
+                    const { error } = await supabaseClient
+                        .from('employees')
+                        .insert([{ name, bank_name, account_type, account_holder, account_number, branch_code, business: currentBusiness }]);
+                    
+                    if (error) {
+                        showNotification('Error creating employee', 'error');
+                    } else {
+                        showNotification('Employee added!', 'success');
+                        await loadAllEmployees();
+                        closeEmployeeModal();
+                    }
+                }
+            }
+            
+            function closeEmployeeModal() {
+                document.getElementById('employeeModal').style.display = 'none';
+                editingEmployeeId = null;
+                document.getElementById('employeeName').value = '';
+                document.getElementById('employeeBankName').value = '';
+                document.getElementById('employeeAccountType').value = 'Cheque';
+                document.getElementById('employeeAccountHolder').value = '';
+                document.getElementById('employeeAccountNumber').value = '';
+                document.getElementById('employeeBranchCode').value = '';
+                document.getElementById('employeeModalTitle').innerHTML = 'Add Employee';
+            }
+            
+            // ========== PAYROLL RUN FUNCTIONS ==========
+            function displayPayrollWageList() {
+                const wageListDiv = document.getElementById('payrollWageList');
+                if (allEmployees.length === 0) {
+                    wageListDiv.innerHTML = '<div style="padding: 15px; color: #999; text-align: center;">No employees added yet. Please add employees first.</div>';
+                    document.getElementById('runPayrollBtn').disabled = true;
+                    return;
+                }
+                
+                document.getElementById('runPayrollBtn').disabled = false;
+                currentWageEntries = allEmployees.map(emp => ({
+                    employee_id: emp.id,
+                    name: emp.name,
+                    amount: 0
+                }));
+                
+                wageListDiv.innerHTML = currentWageEntries.map((emp, index) => `
+                    <div class="payroll-wage-row">
+                        <span><strong>${emp.name}</strong></span>
+                        <span>R <input type="number" class="wage-input" data-index="${index}" value="0" step="0.01" placeholder="0.00" style="width: 150px; padding: 8px; border: 1px solid #ddd; border-radius: 5px; text-align: right;"></span>
+                    </div>
+                `).join('');
+                
+                document.querySelectorAll('.wage-input').forEach(input => {
+                    input.addEventListener('input', function() {
+                        const index = parseInt(this.dataset.index);
+                        const amount = parseFloat(this.value) || 0;
+                        currentWageEntries[index].amount = amount;
+                        updatePayrollSummary();
+                    });
+                });
+            }
+            
+            function updatePayrollSummary() {
+                const totalWages = currentWageEntries.reduce((sum, e) => sum + e.amount, 0);
+                const profitCapital = parseFloat(document.getElementById('profitCapital').value) || 0;
+                const remainingBalance = profitCapital - totalWages;
+                
+                document.getElementById('totalWages').innerHTML = `R${totalWages.toFixed(2)}`;
+                document.getElementById('displayProfitCapital').innerHTML = `R${profitCapital.toFixed(2)}`;
+                document.getElementById('remainingBalance').innerHTML = `R${remainingBalance.toFixed(2)}`;
+                
+                if (remainingBalance < 0) {
+                    document.getElementById('remainingBalance').style.color = '#dc3545';
+                } else {
+                    document.getElementById('remainingBalance').style.color = '#28a745';
+                }
+            }
+            
+            async function runPayroll() {
+                const profitCapital = parseFloat(document.getElementById('profitCapital').value) || 0;
+                const totalWages = currentWageEntries.reduce((sum, e) => sum + e.amount, 0);
+                
+                // Get USD values (completely separate, just for saving)
+                const openingBalanceUSD = parseFloat(document.getElementById('openingBalance').value) || 0;
+                const withdrawalUSD = parseFloat(document.getElementById('withdrawalAmount').value) || 0;
+                const closingBalanceUSD = parseFloat(document.getElementById('closingBalance').value) || 0;
+                
+                if (profitCapital <= 0) {
+                    showNotification('Please enter profit capital amount', 'warning');
+                    return;
+                }
+                
+                if (totalWages <= 0) {
+                    showNotification('Please enter wage amounts for employees', 'warning');
+                    return;
+                }
+                
+                if (totalWages > profitCapital) {
+                    showNotification('Total wages exceed profit capital!', 'warning');
+                    return;
+                }
+                
+                const runNumber = `PR${new Date().getFullYear()}${String(new Date().getMonth() + 1).padStart(2, '0')}${String(new Date().getDate()).padStart(2, '0')}-${Math.floor(Math.random() * 1000)}`;
+                
+                const { error: runError } = await supabaseClient
+                    .from('payroll_runs')
+                    .insert([{
+                        run_number: runNumber,
+                        business: currentBusiness,
+                        total_wages: totalWages,
+                        profit_capital: profitCapital,
+                        remaining_balance: profitCapital - totalWages,
+                        processed_by: currentUser.username,
+                        employees_paid: currentWageEntries.filter(e => e.amount > 0).length,
+                        opening_balance_usd: openingBalanceUSD,
+                        withdrawal_usd: withdrawalUSD,
+                        closing_balance_usd: closingBalanceUSD
+                    }]);
+                
+                if (runError) {
+                    showNotification('Error creating payroll run', 'error');
+                    return;
+                }
+                
+                const receipts = [];
+                for (const entry of currentWageEntries.filter(e => e.amount > 0)) {
+                    const employee = allEmployees.find(e => e.id === entry.employee_id);
+                    const receiptNumber = `PAY${generateReceiptNumber()}`;
+                    
+                    const transaction = {
+                        receipt_number: receiptNumber,
+                        employee_id: entry.employee_id,
+                        employee_name: entry.name,
+                        amount: entry.amount,
+                        business: currentBusiness,
+                        processed_by: currentUser.username,
+                        bank_name: employee.bank_name,
+                        account_type: employee.account_type,
+                        account_holder: employee.account_holder,
+                        account_number: employee.account_number,
+                        branch_code: employee.branch_code
+                    };
+                    
+                    const { error } = await supabaseClient
+                        .from('payroll_transactions')
+                        .insert([transaction]);
+                    
+                    if (!error) {
+                        receipts.push(generatePaymentReceipt(transaction));
+                    }
+                }
+                
+                if (receipts.length > 0) {
+                    showReceiptModal(receipts.join('\n\n' + '='.repeat(50) + '\n\n'));
+                }
+                
+                showNotification(`Payroll run completed! ${receipts.length} employees paid.`, 'success');
+                
+                // Only reset the wage entries, NOT the USD balance fields
+                currentWageEntries.forEach(entry => entry.amount = 0);
+                document.getElementById('profitCapital').value = '';
+                displayPayrollWageList();
+                updatePayrollSummary();
+            }
+            
+            // ========== CUSTOMER FUNCTIONS ==========
+            async function loadAllCustomers() {
+                const { data, error } = await supabaseClient
+                    .from('customers')
+                    .select('*')
+                    .order('name');
+                if (!error && data) {
+                    allCustomers = data;
+                    return data;
+                }
+                return [];
+            }
+            
+            function filterSaleCustomers(searchTerm) {
+                const resultsDiv = document.getElementById('saleCustomerResults');
+                if (searchTerm.length < 2) {
+                    resultsDiv.innerHTML = '<div style="padding: 15px; color: #999;">Type at least 2 characters to search...</div>';
+                    return;
+                }
+                
+                const term = searchTerm.toLowerCase();
+                const filtered = allCustomers.filter(c => 
+                    c.name.toLowerCase().includes(term) || 
+                    c.phone.includes(term)
+                );
+                
+                if (filtered.length > 0) {
+                    resultsDiv.innerHTML = filtered.map(c => `
+                        <div class="result-item" onclick="window.selectSaleCustomer('${c.phone}')">
+                            <strong>${c.name}</strong><br>
+                            📞 ${c.phone} | ✉️ ${c.email || 'No email'}
+                        </div>
+                    `).join('');
+                } else {
+                    resultsDiv.innerHTML = '<div style="padding: 15px; color: #999;">No customers found</div>';
+                }
+            }
+            
+            window.selectSaleCustomer = function(phone) {
+                const customer = allCustomers.find(c => c.phone === phone);
+                if (customer) {
+                    currentSaleCustomer = customer;
+                    document.getElementById('saleCustomerSection').style.display = 'none';
+                    document.getElementById('saleProductsSection').style.display = 'block';
+                    document.getElementById('currentCustomerInfo').innerHTML = `
+                        <h3>👤 Customer Selected</h3>
+                        <p><strong>${customer.name}</strong><br>📞 ${customer.phone}<br>✉️ ${customer.email || 'No email'}<br>📅 Customer since: ${formatLocalDate(customer.since_date)}</p>
+                    `;
+                    showNotification(`Customer ${customer.name} selected`, 'success');
+                }
+            };
+            
+            // ========== PRODUCT FUNCTIONS ==========
+            async function loadAllProducts() {
+                const { data, error } = await supabaseClient
+                    .from('products')
+                    .select('*')
+                    .eq('business', currentBusiness)
+                    .order('description');
+                if (!error && data) {
+                    allProducts = data;
+                    displayProductCatalog();
+                    if (currentUser && currentUser.role === 'admin') {
+                        displayProductList();
+                    }
+                    return data;
+                }
+                return [];
+            }
+            
+            function displayProductCatalog() {
+                const productSearchDiv = document.getElementById('productSearchResults');
+                if (allProducts.length > 0) {
+                    productSearchDiv.innerHTML = allProducts.map(p => `
+                        <div class="product-row">
+                            <div class="product-info">
+                                <span class="product-sku">${p.sku}</span> - ${p.description}
+                            </div>
+                            <div class="product-price">R${p.price_inc_vat.toFixed(2)}</div>
+                        </div>
+                    `).join('');
+                } else {
+                    productSearchDiv.innerHTML = '<div style="padding: 15px; color: #999; text-align: center;">No products found. Admin can add products in Admin Panel.</div>';
+                }
+            }
+            
+            function filterSaleProducts(searchTerm) {
+                const resultsDiv = document.getElementById('saleProductResults');
+                if (searchTerm.length < 2) {
+                    resultsDiv.innerHTML = '<div style="padding: 15px; color: #999;">Type at least 2 characters to search...</div>';
+                    return;
+                }
+                
+                const term = searchTerm.toLowerCase();
+                const filtered = allProducts.filter(p => 
+                    p.sku.toLowerCase().includes(term) || 
+                    p.description.toLowerCase().includes(term)
+                );
+                
+                if (filtered.length > 0) {
+                    resultsDiv.innerHTML = filtered.map(p => `
+                        <div class="result-item" onclick="window.addToCart('${p.sku}')">
+                            <strong>${p.sku}</strong> - ${p.description}<br>
+                            Price: R${p.price_inc_vat.toFixed(2)} (incl. VAT)
+                        </div>
+                    `).join('');
+                } else {
+                    resultsDiv.innerHTML = '<div style="padding: 15px; color: #999;">No products found</div>';
+                }
+            }
+            
+            window.addToCart = function(sku) {
+                const product = allProducts.find(p => p.sku === sku);
+                if (product) {
+                    const priceExclVat = product.price_inc_vat / (1 + VAT_RATE);
+                    const existingItem = cart.find(item => item.sku === sku);
+                    if (existingItem) {
+                        existingItem.quantity++;
+                    } else {
+                        cart.push({
+                            sku: product.sku,
+                            description: product.description,
+                            original_price: product.price_inc_vat,
+                            current_price: product.price_inc_vat,
+                            price_excl_vat: priceExclVat,
+                            quantity: 1,
+                            is_overridden: false
+                        });
+                    }
+                    updateCart();
+                    showNotification(`${product.description} added to cart`, 'success');
+                    document.getElementById('saleProductSearch').value = '';
+                    document.getElementById('saleProductResults').innerHTML = '';
+                }
+            };
+            
+            function updateCart() {
+                const cartDiv = document.getElementById('cartItems');
+                if (cart.length === 0) {
+                    cartDiv.innerHTML = '<p style="text-align:center; color:#999;">Cart is empty</p>';
+                } else {
+                    cartDiv.innerHTML = cart.map((item, index) => `
+                        <div class="cart-item">
+                            <div class="cart-item-info" onclick="window.requestPriceOverride(${index})">
+                                <div class="cart-item-sku">${item.sku}</div>
+                                <div class="cart-item-title">${item.description}</div>
+                                <div class="cart-item-price">
+                                    ${item.is_overridden ? `<strike>R${item.original_price.toFixed(2)}</strike> <span class="new-price">R${item.current_price.toFixed(2)}</span>` : `R${item.current_price.toFixed(2)}`}
+                                </div>
+                            </div>
+                            <div class="cart-item-controls">
+                                <button onclick="window.updateQuantity(${index}, -1)">-</button>
+                                <span style="min-width: 30px; text-align: center;">${item.quantity}</span>
+                                <button onclick="window.updateQuantity(${index}, 1)">+</button>
+                                <button onclick="window.removeFromCart(${index})" style="background:#dc3545; color:white;">×</button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+                
+                const subtotalExcl = cart.reduce((sum, item) => sum + (item.price_excl_vat * item.quantity), 0);
+                const vat = subtotalExcl * VAT_RATE;
+                const subtotalInc = subtotalExcl + vat;
+                const discountAmount = subtotalInc * (discountPercent / 100);
+                const total = subtotalInc - discountAmount;
+                
+                document.getElementById('subtotalExcl').innerHTML = subtotalExcl.toFixed(2);
+                document.getElementById('vatAmount').innerHTML = vat.toFixed(2);
+                document.getElementById('discountAmount').innerHTML = discountAmount.toFixed(2);
+                document.getElementById('grandTotal').innerHTML = total.toFixed(2);
+            }
+            
+            window.updateQuantity = function(index, delta) {
+                const newQty = cart[index].quantity + delta;
+                if (newQty <= 0) {
+                    cart.splice(index, 1);
+                } else {
+                    cart[index].quantity = newQty;
+                }
+                updateCart();
+            };
+            
+            window.removeFromCart = function(index) {
+                cart.splice(index, 1);
+                updateCart();
+            };
+            
+            window.requestPriceOverride = function(index) {
+                const item = cart[index];
+                if (!item) return;
+                
+                if (currentUser.role === 'admin') {
+                    const newPrice = parseFloat(prompt(`Override price for ${item.description}\nCurrent price: R${item.current_price.toFixed(2)}\nEnter new price:`, item.current_price.toFixed(2)));
+                    if (!isNaN(newPrice) && newPrice > 0) {
+                        item.original_price = item.current_price;
+                        item.current_price = newPrice;
+                        item.price_excl_vat = newPrice / (1 + VAT_RATE);
+                        item.is_overridden = true;
+                        updateCart();
+                        showNotification(`Price changed from R${item.original_price.toFixed(2)} to R${newPrice.toFixed(2)}`, 'success');
+                    }
+                } else {
+                    pendingPriceOverride = { index, item };
+                    document.getElementById('overrideProductName').innerHTML = item.description;
+                    document.getElementById('overrideOriginalPrice').innerHTML = item.current_price.toFixed(2);
+                    document.getElementById('overrideNewPrice').value = item.current_price.toFixed(2);
+                    document.getElementById('priceOverrideModal').style.display = 'flex';
+                }
+            };
+            
+            window.confirmPriceOverride = function() {
+                const newPrice = parseFloat(document.getElementById('overrideNewPrice').value);
+                if (isNaN(newPrice) || newPrice <= 0) {
+                    showNotification('Invalid price!', 'warning');
+                    return;
+                }
+                
+                if (pendingPriceOverride) {
+                    const { index, item } = pendingPriceOverride;
+                    item.original_price = item.current_price;
+                    item.current_price = newPrice;
+                    item.price_excl_vat = newPrice / (1 + VAT_RATE);
+                    item.is_overridden = true;
+                    updateCart();
+                    showNotification(`Price changed from R${item.original_price.toFixed(2)} to R${newPrice.toFixed(2)} (approved by manager)`, 'success');
+                }
+                
+                document.getElementById('priceOverrideModal').style.display = 'none';
+                pendingPriceOverride = null;
+                document.getElementById('overrideNewPrice').value = '';
+            };
+            
+            window.cancelPriceOverride = function() {
+                document.getElementById('priceOverrideModal').style.display = 'none';
+                pendingPriceOverride = null;
+                document.getElementById('overrideNewPrice').value = '';
+            };
+            
+            window.applyDiscount = function() {
+                const discountValue = parseFloat(document.getElementById('discountPercent').value);
+                if (isNaN(discountValue) || discountValue <= 0) {
+                    discountPercent = 0;
+                    updateCart();
+                    document.getElementById('discountStatus').innerHTML = '';
+                    return;
+                }
+                
+                if (currentUser.role === 'admin') {
+                    discountPercent = discountValue;
+                    updateCart();
+                    document.getElementById('discountStatus').innerHTML = `<span style="color: green;">✓ Discount of ${discountPercent}% applied</span>`;
+                } else {
+                    pendingDiscount = discountValue;
+                    document.getElementById('managerAuthModal').style.display = 'flex';
+                }
+            };
+            
+            function proceedToTender() {
+                if (cart.length === 0) {
+                    showNotification('Cart is empty!', 'warning');
+                    return;
+                }
+                
+                document.getElementById('saleProductsSection').style.display = 'none';
+                document.getElementById('salePaymentSection').style.display = 'block';
+                const total = parseFloat(document.getElementById('grandTotal').innerHTML);
+                
+                document.getElementById('tenderCustomerName').innerHTML = currentSaleCustomer.name;
+                document.getElementById('tenderTotal').innerHTML = `R${total.toFixed(2)}`;
+                document.getElementById('tenderAmount').innerHTML = 'R0.00';
+                document.getElementById('tenderChange').innerHTML = 'R0.00';
+                document.getElementById('tenderPaymentMethodSelect').value = 'Cash';
+                document.getElementById('bankField').style.display = 'none';
+                document.getElementById('paymentAmount').value = '';
+            }
+            
+            function backToCart() {
+                document.getElementById('salePaymentSection').style.display = 'none';
+                document.getElementById('saleProductsSection').style.display = 'block';
+            }
+            
+            function updateTenderDisplay() {
+                const total = parseFloat(document.getElementById('tenderTotal').innerHTML.replace('R', ''));
+                const amount = parseFloat(document.getElementById('paymentAmount').value) || 0;
+                const change = amount - total;
+                const paymentMethod = document.getElementById('tenderPaymentMethodSelect').value;
+                
+                document.getElementById('tenderAmount').innerHTML = `R${amount.toFixed(2)}`;
+                document.getElementById('tenderChange').innerHTML = change >= 0 ? `R${change.toFixed(2)}` : `-R${Math.abs(change).toFixed(2)}`;
+                
+                if (change >= 0) {
+                    document.getElementById('tenderChange').style.color = '#28a745';
+                } else {
+                    document.getElementById('tenderChange').style.color = '#dc3545';
+                }
+                
+                if (paymentMethod === 'EFT') {
+                    document.getElementById('bankField').style.display = 'block';
+                } else {
+                    document.getElementById('bankField').style.display = 'none';
+                }
+            }
+            
+            async function completeTender() {
+                const total = parseFloat(document.getElementById('tenderTotal').innerHTML.replace('R', ''));
+                const amount = parseFloat(document.getElementById('paymentAmount').value) || 0;
+                const paymentMethod = document.getElementById('tenderPaymentMethodSelect').value;
+                const bankName = document.getElementById('bankName').value;
+                
+                if (amount < total) {
+                    showNotification('Insufficient payment amount!', 'warning');
+                    return;
+                }
+                
+                const cashPaid = paymentMethod === 'Cash' ? amount : 0;
+                const cardPaid = paymentMethod === 'Card' ? amount : 0;
+                const eftPaid = paymentMethod === 'EFT' ? amount : 0;
+                
+                const subtotalExcl = parseFloat(document.getElementById('subtotalExcl').innerHTML);
+                const vat = parseFloat(document.getElementById('vatAmount').innerHTML);
+                const discountAmt = parseFloat(document.getElementById('discountAmount').innerHTML);
+                const receiptNumber = generateReceiptNumber();
+                const now = new Date();
+                
+                let paymentDetails = '';
+                if (paymentMethod === 'EFT' && bankName) {
+                    paymentDetails = ` (Bank: ${bankName})`;
+                }
+                
+                const transaction = {
+                    receipt_number: receiptNumber,
+                    customer_phone: currentSaleCustomer.phone,
+                    customer_name: currentSaleCustomer.name,
+                    business: currentBusiness,
+                    cashier: currentUser.username,
+                    items: cart.map(item => ({
+                        sku: item.sku,
+                        description: item.description,
+                        quantity: item.quantity,
+                        original_price: item.original_price,
+                        current_price: item.current_price,
+                        is_overridden: item.is_overridden,
+                        total: item.current_price * item.quantity
+                    })),
+                    subtotal_excl_vat: subtotalExcl,
+                    vat_amount: vat,
+                    discount_percent: discountPercent,
+                    discount_amount: discountAmt,
+                    total: total,
+                    cash_paid: cashPaid,
+                    card_paid: cardPaid,
+                    eft_paid: eftPaid,
+                    change_due: amount - total,
+                    payment_details: paymentDetails,
+                    date: now.toISOString()
+                };
+                
+                const { error } = await supabaseClient.from('transactions').insert([transaction]);
+                
+                if (error) {
+                    showNotification('Error saving transaction: ' + error.message, 'error');
+                    return;
+                }
+                
+                await loadAllTransactions();
+                const receipt = generateSaleReceipt(transaction);
+                showReceiptModal(receipt);
+                resetSale();
+                showNotification('Sale completed successfully!', 'success');
+            }
+            
+            function generateSaleReceipt(transaction) {
+                const businessName = currentBusiness === 'ultron' ? 'ULTRON TRADING SOLUTIONS' : 'GIFTEDLY';
+                let receipt = `╔══════════════════════════════════════════════════╗\n`;
+                receipt += `║              ${businessName}              ║\n`;
+                receipt += `╚══════════════════════════════════════════════════╝\n\n`;
+                receipt += `──────────────────────────────────────────────────\n`;
+                receipt += `Receipt #: ${transaction.receipt_number}\n`;
+                receipt += `Date: ${formatLocalDateTime(transaction.date)}\n`;
+                receipt += `Cashier: ${transaction.cashier}\n`;
+                receipt += `──────────────────────────────────────────────────\n`;
+                receipt += `CUSTOMER DETAILS\n`;
+                receipt += `──────────────────────────────────────────────────\n`;
+                receipt += `Name: ${transaction.customer_name}\n`;
+                receipt += `Phone: ${transaction.customer_phone}\n`;
+                receipt += `──────────────────────────────────────────────────\n`;
+                receipt += `ITEMS PURCHASED\n`;
+                receipt += `──────────────────────────────────────────────────\n`;
+                transaction.items.forEach(item => {
+                    receipt += `${item.sku}\n`;
+                    let priceLine = item.is_overridden ? `${item.description} (was R${item.original_price.toFixed(2)})` : item.description;
+                    let price = `R${item.current_price.toFixed(2)} x${item.quantity} = R${(item.current_price * item.quantity).toFixed(2)}`;
+                    let spaces = 50 - priceLine.length - price.length;
+                    receipt += `${priceLine}${' '.repeat(Math.max(1, spaces))}${price}\n`;
+                });
+                receipt += `──────────────────────────────────────────────────\n`;
+                receipt += `SUBTOTAL (excl VAT)${' '.repeat(19)}R${transaction.subtotal_excl_vat.toFixed(2)}\n`;
+                receipt += `VAT (15%)${' '.repeat(26)}R${transaction.vat_amount.toFixed(2)}\n`;
+                if (transaction.discount_percent > 0) {
+                    receipt += `DISCOUNT (${transaction.discount_percent}%)${' '.repeat(16)}-R${transaction.discount_amount.toFixed(2)}\n`;
+                }
+                receipt += `──────────────────────────────────────────────────\n`;
+                receipt += `TOTAL DUE${' '.repeat(26)}R${transaction.total.toFixed(2)}\n`;
+                receipt += `──────────────────────────────────────────────────\n`;
+                receipt += `PAYMENT DETAILS\n`;
+                receipt += `──────────────────────────────────────────────────\n`;
+                if (transaction.cash_paid > 0) receipt += `Cash${' '.repeat(31)}R${transaction.cash_paid.toFixed(2)}\n`;
+                if (transaction.card_paid > 0) receipt += `Card${' '.repeat(31)}R${transaction.card_paid.toFixed(2)}\n`;
+                if (transaction.eft_paid > 0) receipt += `EFT${' '.repeat(32)}R${transaction.eft_paid.toFixed(2)}${transaction.payment_details || ''}\n`;
+                receipt += `Change Due${' '.repeat(25)}R${transaction.change_due.toFixed(2)}\n`;
+                receipt += `──────────────────────────────────────────────────\n\n`;
+                receipt += `              **THANK YOU FOR YOUR SUPPORT!**\n\n`;
+                receipt += `──────────────────────────────────────────────────\n`;
+                receipt += `Contact Us:\n`;
+                receipt += `📞 074 335 3692\n`;
+                receipt += `✉️ tradingsol14@gmail.com\n`;
+                receipt += `──────────────────────────────────────────────────\n`;
+                return receipt;
+            }
+            
+            function resetSale() {
+                cart = [];
+                discountPercent = 0;
+                currentSaleCustomer = null;
+                document.getElementById('discountPercent').value = 0;
+                document.getElementById('discountStatus').innerHTML = '';
+                updateCart();
+                document.getElementById('saleCustomerSection').style.display = 'block';
+                document.getElementById('saleProductsSection').style.display = 'none';
+                document.getElementById('salePaymentSection').style.display = 'none';
+                document.getElementById('saleCustomerSearch').value = '';
+                document.getElementById('saleCustomerResults').innerHTML = '';
+            }
+            
+            // ========== TRANSACTION FUNCTIONS ==========
+            async function loadAllTransactions() {
+                const { data, error } = await supabaseClient
+                    .from('transactions')
+                    .select('*')
+                    .eq('business', currentBusiness)
+                    .order('date', { ascending: false });
+                if (!error && data) {
+                    allTransactions = data;
+                    displayAllTransactions();
+                    return data;
+                }
+                return [];
+            }
+            
+            function displayAllTransactions() {
+                const resultsDiv = document.getElementById('transactionResults');
+                if (allTransactions.length > 0) {
+                    resultsDiv.innerHTML = allTransactions.map(t => `
+                        <div class="transaction-item" onclick="window.viewReceipt(${t.id})">
+                            <div style="flex:1;">
+                                <strong>🧾 Receipt: ${t.receipt_number}</strong><br>
+                                📅 ${formatLocalDateTime(t.date)}<br>
+                                👤 ${t.customer_name} | 💰 Total: R${t.total.toFixed(2)}<br>
+                                👨‍💼 Cashier: ${t.cashier}${t.payment_details ? ` | ${t.payment_details}` : ''}
+                            </div>
+                            ${currentUser && currentUser.role === 'admin' ? `<button class="delete-btn" onclick="event.stopPropagation(); window.deleteTransaction(${t.id})">Delete</button>` : ''}
+                        </div>
+                    `).join('');
+                } else {
+                    resultsDiv.innerHTML = '<div style="padding: 15px; color: #999; text-align: center;">No transactions found</div>';
+                }
+            }
+            
+            function filterTransactionsByDateAndMethod() {
+                const fromDate = document.getElementById('filterDateFrom').value;
+                const toDate = document.getElementById('filterDateTo').value;
+                const paymentMethod = document.getElementById('filterPaymentMethod').value;
+                const bankFilter = document.getElementById('filterBank').value;
+                
+                let filtered = [...allTransactions];
+                
+                if (fromDate) {
+                    filtered = filtered.filter(t => new Date(t.date) >= new Date(fromDate));
+                }
+                if (toDate) {
+                    const endDate = new Date(toDate);
+                    endDate.setHours(23, 59, 59);
+                    filtered = filtered.filter(t => new Date(t.date) <= endDate);
+                }
+                if (paymentMethod) {
+                    if (paymentMethod === 'Cash') filtered = filtered.filter(t => t.cash_paid > 0);
+                    else if (paymentMethod === 'Card') filtered = filtered.filter(t => t.card_paid > 0);
+                    else if (paymentMethod === 'EFT') filtered = filtered.filter(t => t.eft_paid > 0);
+                }
+                if (bankFilter && bankFilter !== '') {
+                    filtered = filtered.filter(t => t.payment_details && t.payment_details.includes(bankFilter));
+                }
+                
+                const searchTerm = document.getElementById('transactionSearch').value.toLowerCase();
+                if (searchTerm) {
+                    filtered = filtered.filter(t => 
+                        t.receipt_number.toLowerCase().includes(searchTerm) || 
+                        t.customer_name.toLowerCase().includes(searchTerm) ||
+                        t.customer_phone.includes(searchTerm)
+                    );
+                }
+                
+                const resultsDiv = document.getElementById('transactionResults');
+                if (filtered.length > 0) {
+                    resultsDiv.innerHTML = filtered.map(t => `
+                        <div class="transaction-item" onclick="window.viewReceipt(${t.id})">
+                            <div style="flex:1;">
+                                <strong>🧾 Receipt: ${t.receipt_number}</strong><br>
+                                📅 ${formatLocalDateTime(t.date)}<br>
+                                👤 ${t.customer_name} | 💰 Total: R${t.total.toFixed(2)}<br>
+                                👨‍💼 Cashier: ${t.cashier}${t.payment_details ? ` | ${t.payment_details}` : ''}
+                            </div>
+                            ${currentUser && currentUser.role === 'admin' ? `<button class="delete-btn" onclick="event.stopPropagation(); window.deleteTransaction(${t.id})">Delete</button>` : ''}
+                        </div>
+                    `).join('');
+                } else {
+                    resultsDiv.innerHTML = '<div style="padding: 15px; color: #999; text-align: center;">No matching transactions found</div>';
+                }
+            }
+            
+            function clearFilters() {
+                document.getElementById('filterDateFrom').value = '';
+                document.getElementById('filterDateTo').value = '';
+                document.getElementById('filterPaymentMethod').value = '';
+                document.getElementById('filterBank').value = '';
+                document.getElementById('transactionSearch').value = '';
+                displayAllTransactions();
+            }
+            
+            window.viewReceipt = async function(transactionId) {
+                const { data } = await supabaseClient
+                    .from('transactions')
+                    .select('*')
+                    .eq('id', transactionId)
+                    .single();
+                if (data) {
+                    const receipt = generateSaleReceipt(data);
+                    showReceiptModal(receipt);
+                }
+            };
+            
+            window.deleteTransaction = async function(transactionId) {
+                if (confirm('Are you sure you want to delete this transaction?')) {
+                    const { error } = await supabaseClient
+                        .from('transactions')
+                        .delete()
+                        .eq('id', transactionId);
+                    if (!error) {
+                        showNotification('Transaction deleted!', 'success');
+                        await loadAllTransactions();
+                    }
+                }
+            };
+            
+            // ========== CUSTOMER PROFILE FUNCTIONS ==========
+            function filterProfileCustomers(searchTerm) {
+                const resultsDiv = document.getElementById('customerSearchResults');
+                if (searchTerm.length < 2) {
+                    resultsDiv.innerHTML = '<div style="padding: 15px; color: #999;">Type at least 2 characters to search...</div>';
+                    return;
+                }
+                const term = searchTerm.toLowerCase();
+                const filtered = allCustomers.filter(c => 
+                    c.name.toLowerCase().includes(term) || 
+                    c.phone.includes(term)
+                );
+                if (filtered.length > 0) {
+                    resultsDiv.innerHTML = filtered.map(c => `
+                        <div class="result-item" onclick="window.viewCustomerProfile('${c.phone}')">
+                            <strong>${c.name}</strong><br>
+                            📞 ${c.phone} | ✉️ ${c.email || 'No email'}
+                        </div>
+                    `).join('');
+                } else {
+                    resultsDiv.innerHTML = '<div style="padding: 15px; color: #999;">No customers found</div>';
+                }
+            }
+            
+            window.viewCustomerProfile = async function(phone) {
+                const customer = allCustomers.find(c => c.phone === phone);
+                if (!customer) return;
+                
+                const { data: transactions } = await supabaseClient
+                    .from('transactions')
+                    .select('*')
+                    .eq('customer_phone', phone)
+                    .order('date', { ascending: false });
+                
+                const { data: metadata } = await supabaseClient
+                    .from('customer_metadata')
+                    .select('*')
+                    .eq('customer_phone', phone);
+                
+                document.getElementById('viewCustomerInfo').innerHTML = `
+                    <p><strong>${customer.name}</strong><br>
+                    📞 ${customer.phone}<br>
+                    ✉️ ${customer.email || 'No email'}<br>
+                    📅 Customer since: ${formatLocalDate(customer.since_date)}</p>
+                `;
+                
+                document.getElementById('editName').value = customer.name;
+                document.getElementById('editPhone').value = customer.phone;
+                document.getElementById('editEmail').value = customer.email || '';
+                document.getElementById('editSinceDate').value = customer.since_date || '';
+                
+                const metadataDiv = document.getElementById('customerMetadataList');
+                if (metadata && metadata.length > 0) {
+                    metadataDiv.innerHTML = metadata.map(m => `
+                        <div class="metadata-item">
+                            <strong>${m.field_type}:</strong> ${m.field_value}
+                            <button onclick="window.deleteMetadata(${m.id}, '${phone}')" class="delete-btn" style="padding: 2px 8px;">Delete</button>
+                        </div>
+                    `).join('');
+                } else {
+                    metadataDiv.innerHTML = '<p style="color:#999;">No additional information added yet.</p>';
+                }
+                
+                const historyDiv = document.getElementById('customerHistoryList');
+                if (transactions && transactions.length > 0) {
+                    historyDiv.innerHTML = transactions.map(t => `
+                        <div class="transaction-item">
+                            <div onclick="window.viewReceipt(${t.id})" style="flex:1;">
+                                <strong>Receipt: ${t.receipt_number}</strong><br>
+                                Date: ${formatLocalDateTime(t.date)}<br>
+                                Total: R${t.total.toFixed(2)} | Cashier: ${t.cashier}
+                            </div>
+                            ${currentUser.role === 'admin' ? `<button class="delete-btn" onclick="event.stopPropagation(); window.deleteTransaction(${t.id})">Delete</button>` : ''}
+                        </div>
+                    `).join('');
+                } else {
+                    historyDiv.innerHTML = '<p style="color:#999;">No purchase history</p>';
+                }
+                
+                document.getElementById('customerViewDetails').style.display = 'block';
+                window.currentProfilePhone = phone;
+                document.getElementById('editCustomerForm').style.display = 'none';
+            };
+            
+            window.saveCustomerEdit = async function() {
+                const phone = window.currentProfilePhone;
+                const name = document.getElementById('editName').value;
+                const newPhone = document.getElementById('editPhone').value;
+                const email = document.getElementById('editEmail').value;
+                const since_date = document.getElementById('editSinceDate').value;
+                
+                if (!name || !newPhone) {
+                    showNotification('Name and phone are required!', 'warning');
+                    return;
+                }
+                
+                const { error } = await supabaseClient
+                    .from('customers')
+                    .update({ name, phone: newPhone, email, since_date })
+                    .eq('phone', phone);
+                
+                if (error) {
+                    showNotification('Error updating customer', 'error');
+                } else {
+                    showNotification('Customer updated!', 'success');
+                    await loadAllCustomers();
+                    window.viewCustomerProfile(newPhone);
+                    document.getElementById('editCustomerForm').style.display = 'none';
+                }
+            };
+            
+            window.addMetadata = async function() {
+                const phone = window.currentProfilePhone;
+                const field_type = document.getElementById('metadataType').value;
+                const field_value = document.getElementById('metadataValue').value;
+                
+                if (!field_value) {
+                    showNotification('Please enter a value', 'warning');
+                    return;
+                }
+                
+                const { error } = await supabaseClient
+                    .from('customer_metadata')
+                    .insert([{ customer_phone: phone, field_type, field_value }]);
+                
+                if (error) {
+                    showNotification('Error adding information', 'error');
+                } else {
+                    showNotification('Information added!', 'success');
+                    document.getElementById('metadataValue').value = '';
+                    window.viewCustomerProfile(phone);
+                }
+            };
+            
+            window.deleteMetadata = async function(metadataId, phone) {
+                const { error } = await supabaseClient
+                    .from('customer_metadata')
+                    .delete()
+                    .eq('id', metadataId);
+                
+                if (error) {
+                    showNotification('Error deleting', 'error');
+                } else {
+                    showNotification('Deleted!', 'success');
+                    window.viewCustomerProfile(phone);
+                }
+            };
+            
+            window.showEditForm = function() {
+                document.getElementById('editCustomerForm').style.display = 'block';
+            };
+            
+            window.hideEditForm = function() {
+                document.getElementById('editCustomerForm').style.display = 'none';
+            };
+            
+            async function createCustomer() {
+                const name = document.getElementById('newCustomerName').value;
+                const phone = document.getElementById('newCustomerPhone').value;
+                const email = document.getElementById('newCustomerEmail').value;
+                const since_date = document.getElementById('newCustomerSince').value || new Date().toISOString().split('T')[0];
+                
+                if (!name || !phone) {
+                    showNotification('Name and phone are required!', 'warning');
+                    return;
+                }
+                
+                const { error } = await supabaseClient
+                    .from('customers')
+                    .insert([{ name, phone, email, since_date, created_at: new Date().toISOString() }]);
+                
+                if (error) {
+                    showNotification('Error creating customer. Phone may exist.', 'error');
+                } else {
+                    showNotification('Customer created successfully!', 'success');
+                    document.getElementById('newCustomerName').value = '';
+                    document.getElementById('newCustomerPhone').value = '';
+                    document.getElementById('newCustomerEmail').value = '';
+                    document.getElementById('newCustomerSince').value = '';
+                    await loadAllCustomers();
+                }
+            }
+            
+            // ========== ADMIN FUNCTIONS ==========
+            async function loadUsers() {
+                if (!currentUser || currentUser.role !== 'admin') return;
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .eq('business', currentBusiness);
+                if (!error && data) {
+                    const userListDiv = document.getElementById('userList');
+                    userListDiv.innerHTML = data.map(u => `
+                        <div class="result-item" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>${u.username}</strong> - ${u.role}
+                            </div>
+                            ${currentUser.role === 'admin' && u.username !== currentUser.username ? 
+                                `<button onclick="window.deleteUser('${u.username}')" class="delete-btn">Delete</button>` : ''
+                            }
+                        </div>
+                    `).join('');
+                }
+            }
+            
+            window.createUser = async function() {
+                const username = document.getElementById('newUsername').value;
+                const password = document.getElementById('newPassword').value;
+                const role = document.getElementById('newUserRole').value;
+                
+                if (!username || !password) {
+                    showNotification('Please fill all fields', 'warning');
+                    return;
+                }
+                
+                const { error } = await supabaseClient
+                    .from('users')
+                    .insert([{ username, password, role, business: currentBusiness }]);
+                
+                if (error) {
+                    showNotification('Error creating user. Username may exist.', 'error');
+                } else {
+                    showNotification(`User ${username} created as ${role}!`, 'success');
+                    document.getElementById('newUsername').value = '';
+                    document.getElementById('newPassword').value = '';
+                    await loadUsers();
+                }
+            };
+            
+            window.deleteUser = async function(username) {
+                if (confirm('Are you sure you want to delete this user?')) {
+                    const { error } = await supabaseClient
+                        .from('users')
+                        .delete()
+                        .eq('username', username)
+                        .eq('business', currentBusiness);
+                    
+                    if (error) {
+                        showNotification('Error deleting user', 'error');
+                    } else {
+                        showNotification('User deleted!', 'success');
+                        await loadUsers();
+                    }
+                }
+            };
+            
+            function displayProductList() {
+                const productListDiv = document.getElementById('productList');
+                if (allProducts.length > 0) {
+                    productListDiv.innerHTML = allProducts.map(p => `
+                        <div class="product-row">
+                            <div class="product-info">
+                                <span class="product-sku">${p.sku}</span> - ${p.description}
+                            </div>
+                            <div class="product-price">R${p.price_inc_vat.toFixed(2)}</div>
+                            <div class="product-actions">
+                                <button onclick="window.editProduct('${p.sku}')" class="edit-btn" style="padding: 5px 10px;">Edit</button>
+                                <button onclick="window.deleteProduct('${p.sku}')" class="delete-btn" style="padding: 5px 10px;">Delete</button>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    productListDiv.innerHTML = '<div style="padding: 15px; color: #999; text-align: center;">No products yet. Add your first product above.</div>';
+                }
+            }
+            
+            window.editProduct = async function(sku) {
+                const product = allProducts.find(p => p.sku === sku);
+                if (!product) return;
+                
+                const newSku = prompt('Enter new SKU:', product.sku);
+                if (!newSku) return;
+                const newDesc = prompt('Enter description:', product.description);
+                if (!newDesc) return;
+                const newPrice = parseFloat(prompt('Enter price (incl. VAT):', product.price_inc_vat));
+                if (isNaN(newPrice)) return;
+                
+                const { error } = await supabaseClient
+                    .from('products')
+                    .update({ sku: newSku, description: newDesc, price_inc_vat: newPrice })
+                    .eq('sku', sku)
+                    .eq('business', currentBusiness);
+                
+                if (error) {
+                    showNotification('Error updating product', 'error');
+                } else {
+                    showNotification('Product updated!', 'success');
+                    await loadAllProducts();
+                }
+            };
+            
+            window.deleteProduct = async function(sku) {
+                if (confirm('Are you sure you want to delete this product?')) {
+                    const { error } = await supabaseClient
+                        .from('products')
+                        .delete()
+                        .eq('sku', sku)
+                        .eq('business', currentBusiness);
+                    
+                    if (error) {
+                        showNotification('Error deleting product', 'error');
+                    } else {
+                        showNotification('Product deleted!', 'success');
+                        await loadAllProducts();
+                    }
+                }
+            };
+            
+            window.createProduct = async function() {
+                const sku = document.getElementById('newProductSku').value;
+                const description = document.getElementById('newProductDesc').value;
+                const price_inc_vat = parseFloat(document.getElementById('newProductPrice').value);
+                
+                if (!sku || !description || !price_inc_vat) {
+                    showNotification('Please fill all fields', 'warning');
+                    return;
+                }
+                
+                const { error } = await supabaseClient
+                    .from('products')
+                    .insert([{ sku, description, price_inc_vat, business: currentBusiness }]);
+                
+                if (error) {
+                    showNotification('Error creating product. SKU may exist.', 'error');
+                } else {
+                    showNotification('Product created!', 'success');
+                    document.getElementById('newProductSku').value = '';
+                    document.getElementById('newProductDesc').value = '';
+                    document.getElementById('newProductPrice').value = '';
+                    await loadAllProducts();
+                }
+            };
+            
+            // ========== AUTH FUNCTIONS ==========
+            window.approveAction = async function() {
+                const password = document.getElementById('managerPassword').value;
+                
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .eq('username', 'DawidAdmin')
+                    .eq('password', password)
+                    .eq('business', currentBusiness);
+                
+                if (error || !data || data.length === 0) {
+                    showNotification('Invalid admin password! Action not approved.', 'error');
+                    document.getElementById('managerAuthModal').style.display = 'none';
+                    document.getElementById('managerPassword').value = '';
+                    if (pendingDiscount !== null) {
+                        document.getElementById('discountPercent').value = 0;
+                        pendingDiscount = null;
+                    }
+                    return;
+                }
+                
+                if (pendingDiscount !== null) {
+                    discountPercent = pendingDiscount;
+                    updateCart();
+                    document.getElementById('discountStatus').innerHTML = `<span style="color: green;">✓ Discount of ${discountPercent}% applied (approved by manager)</span>`;
+                    pendingDiscount = null;
+                }
+                
+                document.getElementById('managerAuthModal').style.display = 'none';
+                document.getElementById('managerPassword').value = '';
+                showNotification('Action approved!', 'success');
+            };
+            
+            window.cancelAction = function() {
+                document.getElementById('discountPercent').value = 0;
+                document.getElementById('managerAuthModal').style.display = 'none';
+                document.getElementById('managerPassword').value = '';
+                pendingDiscount = null;
+                pendingPriceOverride = null;
+            };
+            
+            // ========== UI HELPERS ==========
+            function showNotification(message, type = 'info') {
+                const notification = document.getElementById('notification');
+                notification.innerHTML = message;
+                notification.style.background = type === 'success' ? 'rgba(212, 237, 218, 0.95)' : type === 'warning' ? 'rgba(255, 243, 205, 0.95)' : 'rgba(204, 229, 255, 0.95)';
+                notification.style.color = type === 'success' ? '#155724' : type === 'warning' ? '#856404' : '#004085';
+                notification.classList.add('show');
+                setTimeout(() => notification.classList.remove('show'), 3000);
+            }
+            
+            function showReceiptModal(receipt) {
+                const receiptDiv = document.getElementById('receiptContent');
+                let formattedReceipt = receipt.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                receiptDiv.innerHTML = `<pre style="font-family: 'Courier New', Courier, monospace; margin: 0; white-space: pre-wrap;">${formattedReceipt}</pre>`;
+                document.getElementById('receiptModal').style.display = 'flex';
+                currentReceiptText = receipt;
+            }
+            
+            function printReceipt() {
+                const printWindow = window.open('', '_blank', 'width=400,height=600');
+                printWindow.document.write(`<pre style="font-family: 'Courier New', Courier, monospace; padding: 20px; white-space: pre-wrap;">${currentReceiptText}</pre>`);
+                printWindow.print();
+            }
+            
+            function saveAsPDF() {
+                const element = document.getElementById('receiptContent');
+                const opt = {
+                    margin: [0.5, 0.5, 0.5, 0.5],
+                    filename: `receipt_${new Date().getTime()}.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                };
+                html2pdf().set(opt).from(element).save();
+                showNotification('PDF saved!', 'success');
+            }
+            
+            function downloadReceipt() {
+                const blob = new Blob([currentReceiptText], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `receipt_${new Date().getTime()}.txt`;
+                a.click();
+                URL.revokeObjectURL(url);
+                showNotification('Receipt downloaded!', 'success');
+            }
+            
+            // ========== LOGIN/LOGOUT ==========
+            async function login() {
+                const business = document.querySelector('input[name="business"]:checked').value;
+                const username = document.getElementById('loginUsername').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                if (!username || !password) {
+                    showNotification('Please enter username and password', 'warning');
+                    return;
+                }
+                
+                const connected = await initSupabase();
+                if (!connected) return;
+                
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .eq('username', username)
+                    .eq('password', password)
+                    .eq('business', business);
+                
+                if (error || !data || data.length === 0) {
+                    showNotification('Invalid credentials!', 'error');
+                    return;
+                }
+                
+                currentBusiness = business;
+                currentUser = data[0];
+                
+                const iconElement = document.getElementById('businessIcon');
+                if (currentBusiness === 'ultron') {
+                    iconElement.src = 'https://i.postimg.cc/qv2t661k/Gemini-Generated-Image-fmbxwpfmbxwpfmbx.png';
+                    iconElement.style.display = 'block';
+                } else {
+                    iconElement.style.display = 'none';
+                }
+                
+                await Promise.all([
+                    loadAllCustomers(),
+                    loadAllProducts(),
+                    loadAllTransactions(),
+                    loadAllEmployees()
+                ]);
+                
+                if (currentUser.role === 'admin') {
+                    await loadUsers();
+                    document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'block');
+                } else {
+                    document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+                }
+                
+                resetSale();
+                
+                document.getElementById('businessName').innerHTML = business === 'ultron' ? 'Ultron Trading Solutions' : 'Giftedly';
+                document.getElementById('userRoleDisplay').innerHTML = `Welcome, ${username} (${currentUser.role})`;
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('posSystem').style.display = 'block';
+                
+                showNotification('Login successful!', 'success');
+            }
+            
+            function logout() {
+                resetSale();
+                currentUser = null;
+                document.getElementById('loginPage').style.display = 'flex';
+                document.getElementById('posSystem').style.display = 'none';
+                document.getElementById('loginUsername').value = '';
+                document.getElementById('loginPassword').value = '';
+            }
+            
+            // ========== EVENT LISTENERS ==========
+            document.getElementById('loginBtn').addEventListener('click', login);
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+            
+            // Tab switching
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.tab).classList.add('active');
+                });
+            });
+            
+            // Payroll sub-tabs
+            document.getElementById('payrollEmployeesTab').addEventListener('click', () => {
+                document.getElementById('payrollEmployeesSection').style.display = 'block';
+                document.getElementById('payrollRunSection').style.display = 'none';
+                document.getElementById('payrollEmployeesTab').style.background = '#667eea';
+                document.getElementById('payrollEmployeesTab').style.color = 'white';
+                document.getElementById('payrollRunTab').style.background = '';
+                document.getElementById('payrollRunTab').style.color = '';
+            });
+            
+            document.getElementById('payrollRunTab').addEventListener('click', () => {
+                document.getElementById('payrollEmployeesSection').style.display = 'none';
+                document.getElementById('payrollRunSection').style.display = 'block';
+                document.getElementById('payrollRunTab').style.background = '#667eea';
+                document.getElementById('payrollRunTab').style.color = 'white';
+                document.getElementById('payrollEmployeesTab').style.background = '';
+                document.getElementById('payrollEmployeesTab').style.color = '';
+                displayPayrollWageList();
+            });
+            
+            // Employee modal
+            document.getElementById('addEmployeeBtn').addEventListener('click', () => {
+                editingEmployeeId = null;
+                document.getElementById('employeeModalTitle').innerHTML = 'Add Employee';
+                document.getElementById('employeeName').value = '';
+                document.getElementById('employeeBankName').value = '';
+                document.getElementById('employeeAccountType').value = 'Cheque';
+                document.getElementById('employeeAccountHolder').value = '';
+                document.getElementById('employeeAccountNumber').value = '';
+                document.getElementById('employeeBranchCode').value = '';
+                document.getElementById('employeeModal').style.display = 'flex';
+            });
+            
+            document.getElementById('saveEmployeeBtn').addEventListener('click', saveEmployee);
+            document.getElementById('cancelEmployeeBtn').addEventListener('click', closeEmployeeModal);
+            document.getElementById('editEmployeeBtn').addEventListener('click', window.editEmployee);
+            document.getElementById('deleteEmployeeBtn').addEventListener('click', window.deleteEmployee);
+            document.getElementById('closeEmployeeProfileBtn').addEventListener('click', () => {
+                document.getElementById('employeeProfileModal').style.display = 'none';
+            });
+            
+            // Payroll run
+            document.getElementById('runPayrollBtn').addEventListener('click', runPayroll);
+            document.getElementById('profitCapital').addEventListener('input', updatePayrollSummary);
+            
+            // POS events
+            document.getElementById('saleCustomerSearch').addEventListener('input', (e) => filterSaleCustomers(e.target.value));
+            document.getElementById('saleProductSearch').addEventListener('input', (e) => filterSaleProducts(e.target.value));
+            document.getElementById('customerSearchInput').addEventListener('input', (e) => filterProfileCustomers(e.target.value));
+            document.getElementById('productSearchInput').addEventListener('input', (e) => filterViewProducts(e.target.value));
+            document.getElementById('clearSaleBtn').addEventListener('click', resetSale);
+            document.getElementById('proceedToTenderBtn').addEventListener('click', proceedToTender);
+            document.getElementById('backToCartBtn').addEventListener('click', backToCart);
+            document.getElementById('completeTenderBtn').addEventListener('click', completeTender);
+            document.getElementById('applyDiscountBtn').addEventListener('click', window.applyDiscount);
+            document.getElementById('createCustomerBtn').addEventListener('click', createCustomer);
+            document.getElementById('showEditFormBtn').addEventListener('click', window.showEditForm);
+            document.getElementById('cancelEditBtn').addEventListener('click', window.hideEditForm);
+            document.getElementById('saveEditBtn').addEventListener('click', window.saveCustomerEdit);
+            document.getElementById('addMetadataBtn').addEventListener('click', window.addMetadata);
+            
+            // Receipt modal buttons
+            document.getElementById('printReceiptBtn').addEventListener('click', printReceipt);
+            document.getElementById('pdfReceiptBtn').addEventListener('click', saveAsPDF);
+            document.getElementById('downloadReceiptBtn').addEventListener('click', downloadReceipt);
+            document.getElementById('closeReceiptBtn').addEventListener('click', () => {
+                document.getElementById('receiptModal').style.display = 'none';
+            });
+            
+            // Manager auth
+            document.getElementById('approveActionBtn').addEventListener('click', window.approveAction);
+            document.getElementById('cancelActionBtn').addEventListener('click', window.cancelAction);
+            document.getElementById('confirmOverrideBtn').addEventListener('click', window.confirmPriceOverride);
+            document.getElementById('cancelOverrideBtn').addEventListener('click', window.cancelPriceOverride);
+            
+            // Admin panel
+            document.getElementById('createUserBtn').addEventListener('click', window.createUser);
+            document.getElementById('createProductBtn').addEventListener('click', window.createProduct);
+            
+            // Transaction filters
+            document.getElementById('applyFilterBtn').addEventListener('click', filterTransactionsByDateAndMethod);
+            document.getElementById('clearFilterBtn').addEventListener('click', clearFilters);
+            document.getElementById('transactionSearch').addEventListener('input', filterTransactionsByDateAndMethod);
+            
+            // Numpad
+            document.querySelectorAll('.num-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const paymentInput = document.getElementById('paymentAmount');
+                    if (this.textContent === '.') {
+                        if (!paymentInput.value.includes('.')) {
+                            paymentInput.value += this.textContent;
+                        }
+                    } else {
+                        paymentInput.value += this.textContent;
+                    }
+                    updateTenderDisplay();
+                });
+            });
+            document.getElementById('clearNumBtn').addEventListener('click', function() {
+                document.getElementById('paymentAmount').value = '';
+                updateTenderDisplay();
+            });
+            document.getElementById('paymentAmount').addEventListener('input', updateTenderDisplay);
+            document.getElementById('tenderPaymentMethodSelect').addEventListener('change', updateTenderDisplay);
+            document.getElementById('paymentAmount').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const total = parseFloat(document.getElementById('tenderTotal').innerHTML.replace('R', ''));
+                    const amount = parseFloat(this.value) || 0;
+                    if (amount >= total) {
+                        completeTender();
+                    }
+                }
+            });
+            
+            function filterViewProducts(searchTerm) {
+                const resultsDiv = document.getElementById('productSearchResults');
+                if (searchTerm.length < 2) {
+                    displayProductCatalog();
+                    return;
+                }
+                const term = searchTerm.toLowerCase();
+                const filtered = allProducts.filter(p => 
+                    p.sku.toLowerCase().includes(term) || 
+                    p.description.toLowerCase().includes(term)
+                );
+                if (filtered.length > 0) {
+                    resultsDiv.innerHTML = filtered.map(p => `
+                        <div class="product-row">
+                            <div class="product-info">
+                                <span class="product-sku">${p.sku}</span> - ${p.description}
+                            </div>
+                            <div class="product-price">R${p.price_inc_vat.toFixed(2)}</div>
+                        </div>
+                    `).join('');
+                } else {
+                    resultsDiv.innerHTML = '<div style="padding: 15px; color: #999; text-align: center;">No products found</div>';
+                }
+            }
+            
+            function displayProductCatalog() {
+                const productSearchDiv = document.getElementById('productSearchResults');
+                if (allProducts.length > 0) {
+                    productSearchDiv.innerHTML = allProducts.map(p => `
+                        <div class="product-row">
+                            <div class="product-info">
+                                <span class="product-sku">${p.sku}</span> - ${p.description}
+                            </div>
+                            <div class="product-price">R${p.price_inc_vat.toFixed(2)}</div>
+                        </div>
+                    `).join('');
+                } else {
+                    productSearchDiv.innerHTML = '<div style="padding: 15px; color: #999; text-align: center;">No products found. Admin can add products in Admin Panel.</div>';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
